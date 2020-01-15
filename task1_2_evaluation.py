@@ -39,11 +39,6 @@ def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'referenc
     gs["rel"] = str(1) # column indicating the relevance of the code (in GS, all codes are relevant)
     gs.docno = gs.docno.str.lower() # Lowercase codes
     
-    # Labels (S002-...) to integers
-    le = LabelEncoder() 
-    le.fit(gs.qid)
-    gs.qid = le.transform(gs.qid) 
-    
     # Remove codes predicted twice in the same clinical case 
     # (they are present in GS because one code may have several references)
     gs = gs.drop_duplicates(subset=['qid','docno'],  
@@ -52,9 +47,9 @@ def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'referenc
     # Write dataframe to Qrel file
     gs.to_csv(output_path, index=False, header=None, sep=' ')
     
-    return le
+    return
 
-def format_predictions(le, filepath, output_path, system_name = 'xx', 
+def format_predictions(filepath, output_path, system_name = 'xx', 
                        pred_names = ['query','docid']):
     
     # DESCRIPTION: Load Predictions table and add extra columns to match 
@@ -81,9 +76,6 @@ def format_predictions(le, filepath, output_path, system_name = 'xx',
     
     # Reorder and rename columns
     pred = pred[['query', "q0", 'docid', 'rank', 'score', 'system']]
-
-    # Labels (S002-...) to integers
-    pred["query"] = le.transform(pred["query"]) # Labels (S002-...) to integers
     
     # Lowercase codes
     pred["docid"] = pred["docid"].str.lower() 
@@ -117,11 +109,11 @@ if __name__ == '__main__':
     gs_path, pred_path = parse_arguments()
 
     ###### 1. Format GS as TrecQrel format: ######
-    le = format_gs(gs_path, './intermediate_gs_file.txt')
+    format_gs(gs_path, './intermediate_gs_file.txt')
         
     
     ###### 2. Format predictions as TrecRun format: ######
-    format_predictions(le, pred_path, './intermediate_predictions_file.txt')
+    format_predictions(pred_path, './intermediate_predictions_file.txt')
     
     
     ###### 3. Calculate MAP ######
