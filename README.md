@@ -22,7 +22,7 @@ INSERT EXAMPLE OF PREDICTIONS.TSV FOR TASK 3
 This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and trectools (https://pypi.python.org/pypi/trectools).
 
 
-##Directory structure
+## Directory structure
 ##### gold/
 This directory contains the gold standard files for each of the sub-tasks, in separated
 directories. Each sub-directory may contain different sub-directories for each data set: 
