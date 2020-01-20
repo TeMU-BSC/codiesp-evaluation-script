@@ -14,15 +14,10 @@ Mean Average Precision (MAP) is computed using the Python implementation of TREC
 
 + gold_standard.tsv must be the gold standard files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
 
-+ predictions.tsv must be the predictions file. For task 1 and 2 it is a tab-separated file with two columns: clinical case and code. Codes must be ordered by rank. For example:
-```
-S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal
-```
++ predictions.tsv must be the predictions file. 
+    + For task 1 and 2, it is a tab-separated file with two columns: clinical case and code. Codes must be ordered by rank. For example:```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
 
-+ For task 3, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example:
-```
-S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal
-```
+    + For task 3, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example: ```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
 
 ## Prerequisites
 This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and [trectools](https://pypi.python.org/pypi/trectools).
@@ -35,12 +30,12 @@ The directory structure of this repo is not required to run the Python scripts.
 This directory contains the gold standard files for each of the sub-tasks, in separated
 directories. Each sub-directory may contain different sub-directories for each data set: 
 sample, train, development, test, etc. Sample gold standard files and toy data are in this GitHub repository. For more gold standard files, please, visit the [CodiEsp Track webpabe](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
-Gold standard files must be in the appropriate format (such as the files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/).
+Gold standard files must be in the appropriate format (such as the files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/)).
 
 ##### system/
 This directory contains the submission files for each of the sub-tasks, in separated
 directories. Each sub-directory may contain different sub-directories for each data set: 
-sample, train, development, test, etc. A toy data directory is provided. Files in the latter directories must be in the appropriate format (explained in the Introduction section).
+sample, train, development, test, etc. A toy data directory is provided. Files in the latter directories must be in the appropriate format (explained in the [Introduction section](#introduction)).
 
 
 ## Usage
@@ -55,7 +50,7 @@ $> python task3_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/prediction
 
 ## Examples
 #### Example 1:
-Evaluate the system output pred_task1_2.tsv (inside toy_data subfolder) against the gold standard gs_task1_2.tsv (inside toy_data subfolder).
+Evaluate the system output pred_task1_2.tsv against the gold standard gs_task1_2.tsv (both inside toy_data subfolders).
 
 ```
 $> python3 task1_2_evaluation.py -g gold/toy_data/gs_task1_2.txt -p system/toy_data/pred_task1_2.txt
@@ -64,7 +59,7 @@ MAP estimate: 0.652
 ```
 
 #### Example 2:
-Evaluate the system output pred_task3.tsv (inside toy_data subfolder) against the gold standard gs_task3.tsv (inside toy_data subfolder). Evaluation measures are Precision, Recall and F-score. A True Positive is considered when the correct code is predicted and the right reference position is also given (with 10 characters of error tolerance).
+Evaluate the system output pred_task3.tsv against the gold standard gs_task3.tsv (both inside toy_data subfolders). Evaluation measures are Precision, Recall and F-score. A True Positive is considered when the correct code is predicted and the right reference position is also given (with 10 characters of error tolerance).
 
 ```
 $> python3 task3_evaluation.py -g gold/toy_data/gs_task3.tsv -p system/toy_data/pred_task3.tsv
