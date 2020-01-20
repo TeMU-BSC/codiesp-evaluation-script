@@ -8,8 +8,7 @@ Created on Wed Jan  8 16:11:51 2020
 
 import pandas as pd
 import argparse
-
-
+import warnings
 
 def read_gs(filepath, gs_headers=["clinical_case","label_gs", "code", "ref", "pos_gs"]):
     '''
@@ -180,6 +179,9 @@ if __name__ == '__main__':
     for index, val in P_per_cc.items():
         print(str(index) + '\t\t' + str(round(val, 3)))
         print('-----------------------------------------------------')
+    if any(P_per_cc.isna()):
+        warnings.warn('Some documents do not have predicted codes, ' + 
+                      'document-wise Precision not computed for them.')
         
     print('\nMicro-average precision = {}\n'.format(round(P, 3)))
     
@@ -189,7 +191,9 @@ if __name__ == '__main__':
     for index, val in R_per_cc.items():
         print(str(index) + '\t\t' + str(round(val, 3)))
         print('-----------------------------------------------------')
-        
+    if any(R_per_cc.isna()):
+        warnings.warn('Some documents do not have Gold Standard codes, ' + 
+                      'document-wise Recall not computed for them.')
     print('\nMicro-average recall = {}\n'.format(round(R, 3)))
     
     print('\n-----------------------------------------------------')
@@ -198,7 +202,16 @@ if __name__ == '__main__':
     for index, val in F1_per_cc.items():
         print(str(index) + '\t\t' + str(round(val, 3)))
         print('-----------------------------------------------------')
-        
+    if any(P_per_cc.isna()):
+        warnings.warn('Some documents do not have predicted codes, ' + 
+                      'document-wise F-score not computed for them.')
+    if any(R_per_cc.isna()):
+        warnings.warn('Some documents do not have Gold Standard codes, ' + 
+                      'document-wise F-score not computed for them.')
     print('\nMicro-average F-score = {}\n'.format(round(F1, 3)))
-    print('\nMicro-average precision = {}\n'.format(round(P, 3)))
-    print('\nMicro-average recall = {}\n'.format(round(R, 3)))
+    
+    print('\n__________________________________________________________')
+    print('\nMICRO-AVERAGE STATISTICS:')
+    print('\nMicro-average precision = {}'.format(round(P, 3)))
+    print('\nMicro-average recall = {}'.format(round(R, 3)))
+    print('\nMicro-average F-score = {}\n'.format(round(F1, 3)))
