@@ -12,13 +12,14 @@ import argparse
 
 
 def read_gs(filepath, gs_headers=["clinical_case","label_gs", "code", "ref", "pos_gs"]):
+    '''
+    DESCRIPTION: Load Gold Standard table
     
-    # DESCRIPTION: Load Gold Standard table
+    INPUT: route to TSV file with Gold Standard.
     
-    # INPUT: route to TSV file with Gold Standard.
-    
-    # OUTPUT: pandas dataframe with columns:
-    #       ['clinical_case','label_gs','code','ref','pos_gs','start_pos_gs','end_pos_gs']
+    OUTPUT: pandas dataframe with columns:
+          ['clinical_case','label_gs','code','ref','pos_gs','start_pos_gs','end_pos_gs']
+    '''
     
     gs_data = pd.read_csv(filepath, sep="\t", names=gs_headers)
     
@@ -35,14 +36,15 @@ def read_gs(filepath, gs_headers=["clinical_case","label_gs", "code", "ref", "po
     return gs_data
 
 def read_run(filepath, run_headers=["clinical_case","pos_pred","label_pred", "code"]):
-    
-    # DESCRIPTION: Load Predictions table
+    '''
+    DESCRIPTION: Load Predictions table
         
-    # INPUT: route to TSV file with Predictions.
+    INPUT: route to TSV file with Predictions.
     
-    # OUTPUT: pandas dataframe with columns:
-    #        [clinical_case, label_pred, code, start_pos_pred, end_pos_pred]
-        
+    OUTPUT: pandas dataframe with columns:
+           [clinical_case, label_pred, code, start_pos_pred, end_pos_pred]
+    '''
+    
     run_data = pd.read_csv(filepath, sep="\t", names=run_headers)
     
     # Split position into starting and end positions
@@ -54,8 +56,9 @@ def read_run(filepath, run_headers=["clinical_case","pos_pred","label_pred", "co
     return run_data
 
 def parse_arguments():
-    
-    # DESCRIPTION: Parse command line arguments
+    '''
+    DESCRIPTION: Parse command line arguments
+    '''
     
     parser = argparse.ArgumentParser(description='process user given parameters')
     parser.add_argument("-g", "--gs_path", required = True, dest = "gs_path", 
@@ -70,36 +73,37 @@ def parse_arguments():
     return gs_filepath, pred_filepath
 
 def calculate_score(df_gs, df_pred, tol = 10):
-           
-    # DESCRIPTION: Calculate task 3 score:
-    # 
-    #           number of correctly found references
-    # score = ---------------------------------------
-    #                 total number of codes
-    #
-    # Two scores are calculated: per document and micro-average.
-    # In case a code has several references, just acknowledging one is enough.
-    # In case of discontinuous references, the reference is considered to 
-    # start and the start position of the first part of the reference and to 
-    # end at the final position of the last part of the reference.
+    '''       
+    DESCRIPTION: Calculate task 3 score:
     
-    # INPUT: pandas dataframes with the Gold Standard (df_gs) and with the
-    #       predictions (df_pred). Dataframes columns are those output by the
-    #       functions read_gs and read_run.
+              number of correctly found references
+    score = ---------------------------------------
+                    total number of codes
     
-    # OUTPUT: pandas series with one entry per clinical case score (index 
-    #       column contains clinical case names) and float with the 
-    #       micro-average score.
-
+    Two scores are calculated: per document and micro-average.
+    In case a code has several references, just acknowledging one is enough.
+    In case of discontinuous references, the reference is considered to 
+    start and the start position of the first part of the reference and to 
+    end at the final position of the last part of the reference.
+    
+    INPUT: pandas dataframes with the Gold Standard (df_gs) and with the
+          predictions (df_pred). Dataframes columns are those output by the
+          functions read_gs and read_run.
+    
+    OUTPUT: pandas series with one entry per clinical case score (index 
+          column contains clinical case names) and float with the 
+          micro-average score.
+    '''
+    
     # Predicted Positives:
-    PredP_per_cc = df_run.drop_duplicates(subset=['clinical_case', 
+    Pred_Pos_per_cc = df_run.drop_duplicates(subset=['clinical_case', 
                                                   "code"]).groupby("clinical_case")["code"].count()
-    PredP = df_run.drop_duplicates(subset=['clinical_case', "code"]).shape[0]
+    Pred_Pos = df_run.drop_duplicates(subset=['clinical_case', "code"]).shape[0]
     
     # Gold Standard Positives:
-    GSP_per_cc = df_gs.drop_duplicates(subset=['clinical_case', 
+    GS_Pos_per_cc = df_gs.drop_duplicates(subset=['clinical_case', 
                                                "code"]).groupby("clinical_case")["code"].count()
-    GSP = df_gs.drop_duplicates(subset=['clinical_case', "code"]).shape[0]
+    GS_Pos = df_gs.drop_duplicates(subset=['clinical_case', "code"]).shape[0]
     
     # Eliminate predictions not in GS
     df_sel = pd.merge(df_run, df_gs, 
@@ -113,11 +117,6 @@ def calculate_score(df_gs, df_pred, tol = 10):
                                                  (x["start_space"] >= 0) &
                                                  (x["end_space"] <= tol) &
                                                  (x["end_space"] >= 0)), axis=1)
-        
-    # Calculate weights proportional to the amount of useless text wrongly selected
-    # weight = 1 - (useless space / reference length)
-    '''df_sel["weight"] = 1 - ((df_sel["start_space"] + df_sel["end_space"]) /
-                            (df_sel["end_pos_gs"] - df_sel["start_pos_gs"]))'''
     
     # Remove duplicates that appear in case there are codes with several references in GS
     # In case just one of the references is predicted, mark the code as True
@@ -127,14 +126,36 @@ def calculate_score(df_gs, df_pred, tol = 10):
                                       keep="last")
 
     # True Positives:
-    TP_per_cc = df_final[df_final["is_valid"] == True].groupby("clinical_case")["is_valid"].count()
+    TP_per_cc = (df_final[df_final["is_valid"] == True]
+                 .groupby("clinical_case")["is_valid"].count())
     TP = df_final[df_final["is_valid"] == True].shape[0]
     
+    # Add entries for clinical cases that are not in predictions but are present
+    # in the GS
+    cc_not_predicted = (df_run.drop_duplicates(subset=["clinical_case"])
+                        .merge(df_gs.drop_duplicates(subset=["clinical_case"]), 
+                              on='clinical_case',
+                              how='right', indicator=True)
+                        .query('_merge == "right_only"')
+                        .drop('_merge', 1))['clinical_case'].to_list()
+    for cc in cc_not_predicted:
+        TP_per_cc[cc] = 0
+    
+    # Remove entries for clinical cases that are not in GS but are present
+    # in the predictions
+    cc_not_GS = (df_gs.drop_duplicates(subset=["clinical_case"])
+                .merge(df_run.drop_duplicates(subset=["clinical_case"]), 
+                      on='clinical_case',
+                      how='right', indicator=True)
+                .query('_merge == "right_only"')
+                .drop('_merge', 1))['clinical_case'].to_list()
+    Pred_Pos_per_cc = Pred_Pos_per_cc.drop(cc_not_GS)
+
     # Calculate Final Metrics:
-    P_per_cc =  TP_per_cc / PredP_per_cc
-    P = TP / PredP
-    R_per_cc = TP_per_cc / GSP_per_cc
-    R = TP / GSP
+    P_per_cc =  TP_per_cc / Pred_Pos_per_cc
+    P = TP / Pred_Pos
+    R_per_cc = TP_per_cc / GS_Pos_per_cc
+    R = TP / GS_Pos
     F1_per_cc = (2 * P_per_cc * R_per_cc) / (P_per_cc + R_per_cc)
     F1 = (2 * P * R) / (P + R)
                                             

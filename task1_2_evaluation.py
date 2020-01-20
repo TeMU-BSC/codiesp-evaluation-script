@@ -11,24 +11,23 @@ Created on Wed Dec 18 15:22:29 2019
 
 import pandas as pd
 from trectools import TrecQrel, TrecRun, TrecEval
-from sklearn.preprocessing import LabelEncoder
 import argparse
 
 
 def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'reference']):
+    '''
+    DESCRIPTION: Load Gold Standard table.
     
-    # DESCRIPTION: Load Gold Standard table.
+    INPUT: route to TSV file with Gold Standard.
     
-    # INPUT: route to TSV file with Gold Standard.
+    OUTPUT: pandas dataframe with columns ["query", "q0", "docid", "rel"].
     
-    # OUTPUT: pandas dataframe with columns ["query", "q0", "docid", "rel"].
-    
-    # Note: Dataframe headers chosen to match library standards. 
-    #       More informative headers for the INPUT would be: 
-    #       ["clinical case","label","code","relevance"]
-    
+    Note: Dataframe headers chosen to match library standards. 
+          More informative headers for the INPUT would be: 
+          ["clinical case","label","code","relevance"]
     
     # https://github.com/joaopalotti/trectools#file-formats
+    '''
     
     gs = pd.read_csv(filepath, sep='\t', header = None, names = gs_names)
 
@@ -51,19 +50,20 @@ def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'referenc
 
 def format_predictions(filepath, output_path, system_name = 'xx', 
                        pred_names = ['query','docid']):
-    
-    # DESCRIPTION: Load Predictions table and add extra columns to match 
-    # trectools library standards.
+    '''
+    DESCRIPTION: Load Predictions table and add extra columns to match 
+    trectools library standards.
         
-    # INPUT: route to TSV file with Predictions.
-    
-    # OUTPUT: pandas dataframe with columns ['query', "q0", 'docid', 'rank', 'score', 'system']
-    
-    # Note: Dataframe headers chosen to match library standards.
-    #       More informative INPUT headers would be: 
-    #       ["clinical case","code"]
+    INPUT: route to TSV file with Predictions.
 
-    # https://github.com/joaopalotti/trectools#file-formats
+    OUTPUT: pandas dataframe with columns ['query', "q0", 'docid', 'rank', 'score', 'system']
+    
+    Note: Dataframe headers chosen to match library standards.
+          More informative INPUT headers would be: 
+          ["clinical case","code"]
+
+    https://github.com/joaopalotti/trectools#file-formats
+    '''
     
     pred = pd.read_csv(filepath, sep='\t', header = None, names = pred_names)
     
@@ -88,8 +88,9 @@ def format_predictions(filepath, output_path, system_name = 'xx',
     pred.to_csv(output_path, index=False, header=None, sep = '\t')
 
 def parse_arguments():
-    
-    # DESCRIPTION: Parse command line arguments
+    '''
+    DESCRIPTION: Parse command line arguments
+    '''
     
     parser = argparse.ArgumentParser(description='process user given parameters')
     parser.add_argument("-g", "--gs_path", required = True, dest = "gs_path", 
