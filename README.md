@@ -20,7 +20,7 @@ Mean Average Precision (MAP) is computed using the Python implementation of TREC
     + For task 3, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example: ```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
 
 ## Prerequisites
-This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and [trectools](https://pypi.python.org/pypi/trectools).
+This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and [trectools](https://pypi.python.org/pypi/trectools). For a detailed description, see requirements.txt.
 
 
 ## Directory structure
@@ -53,7 +53,7 @@ $> python task3_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/prediction
 Evaluate the system output pred_task1_2.tsv against the gold standard gs_task1_2.tsv (both inside toy_data subfolders).
 
 ```
-$> python3 task1_2_evaluation.py -g gold/toy_data/gs_task1_2.txt -p system/toy_data/pred_task1_2.txt
+$> python3 task1_2_evaluation.py -g gold/toy_data/gs_task1_2.tsv -p system/toy_data/pred_task1_2.tsv
 
 MAP estimate: 0.652
 ```
