@@ -10,19 +10,22 @@ $> python task3_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/prediction
 
 They compute the evaluation metrics for the corresponding tasks (Mean Average Precision for the tasks 1 and 2 and F-score for task 3).
 
-Mean Average Precision (MAP) is computed using the Python implementation of TREC evaluation tool, trectools (https://github.com/joaopalotti/trectools), by Palotti et al. (2019) [1].
+Mean Average Precision (MAP) is computed using the Python implementation of TREC evaluation tool, [trectools](https://github.com/joaopalotti/trectools), by Palotti et al. (2019) [1].
 
-+ gold_standard.tsv must be the gold standard files distributed in the CodiEsp Track webpage (http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
++ gold_standard.tsv must be the gold standard files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
 
 + predictions.tsv must be the predictions file. For task 1 and 2 it is a tab-separated file with two columns: clinical case and code. Codes must be ordered by rank. For example:
+```
 S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal
+```
 
-For task 3, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example:
++ For task 3, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example:
+```
 S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal
-
+```
 
 ## Prerequisites
-This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and trectools (https://pypi.python.org/pypi/trectools).
+This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and [trectools](https://pypi.python.org/pypi/trectools).
 
 
 ## Directory structure
@@ -31,8 +34,8 @@ The directory structure of this repo is not required to run the Python scripts.
 ##### gold/
 This directory contains the gold standard files for each of the sub-tasks, in separated
 directories. Each sub-directory may contain different sub-directories for each data set: 
-sample, train, development, test, etc. Sample gold standard files and toy data are in this GitHub repository. For more gold standard files, please, visit the CodiEsp Track webpabe (http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
-Gold standard files must be in the appropriate format (such as the files distributed in the CodiEsp Track webpage, http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/).
+sample, train, development, test, etc. Sample gold standard files and toy data are in this GitHub repository. For more gold standard files, please, visit the [CodiEsp Track webpabe](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
+Gold standard files must be in the appropriate format (such as the files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/).
 
 ##### system/
 This directory contains the submission files for each of the sub-tasks, in separated
