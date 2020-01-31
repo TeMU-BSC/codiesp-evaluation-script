@@ -4,8 +4,8 @@
 These scripts are distributed as part of the Clinical Cases Coding in Spanish language Track (CodiEsp). They are intended to be run via command line:
 
 ```
-$> python codiespD_P_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv
-$> python codiespX_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv
+$> python codiespD_P_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -c /path/to/codes.tsv
+$> python codiespX_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -cD /path/to/codes-D.tsv -cP path/to/codes-P.tsv
 ```
 
 They compute the evaluation metrics for the corresponding tasks (Mean Average Precision for CodiEsp-D and CodiEsp-P and F-score for CodiEsp-X).
@@ -17,7 +17,7 @@ Mean Average Precision (MAP) is computed using the Python implementation of TREC
 + predictions.tsv must be the predictions file. 
     + For CodiEsp-D and CodiEsp-P, it is a tab-separated file with two columns: clinical case and code. Codes must be ordered by rank. For example:```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
 
-    + For CodiEsp-X, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example: ```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
+    + For CodiEsp-X, the file predictions.tsv is also a tab-separated file. In this case, with four columns: clinical case, reference position, code label, code. For example: ```S1889-836X2016000100006-1	100 200	DIAGNOSTICO	n20.0```
 
 ## Prerequisites
 This software requires to have Python 3 installed on your system with the libraries Pandas, NumPy, SciPy, Matplotlib and [trectools](https://pypi.python.org/pypi/trectools). For a detailed description, see requirements.txt.
