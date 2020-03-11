@@ -12,7 +12,7 @@ They compute the evaluation metrics for the corresponding tasks (Mean Average Pr
 
 Mean Average Precision (MAP) is computed using the Python implementation of TREC evaluation tool, [trectools](https://github.com/joaopalotti/trectools), by Palotti et al. (2019) [1].
 
-+ gold_standard.tsv must be the gold standard files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
++ gold_standard.tsv must be the gold standard files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/datasets/). 
 
 + predictions.tsv must be the predictions file. 
     + For CodiEsp-D and CodiEsp-P, it is a tab-separated file with two columns: clinical case and code. Codes must be ordered by rank. For example:```S1889-836X2016000100006-1	DIAGNOSTICO	n20.0	litiasis renal```
@@ -29,8 +29,8 @@ The directory structure of this repo is not required to run the Python scripts.
 ##### gold/
 This directory contains the gold standard files for each of the sub-tasks, in separated
 directories. Each sub-directory may contain different sub-directories for each data set: 
-sample, train, development, test, etc. Sample gold standard files and toy data are in this GitHub repository. For more gold standard files, please, visit the [CodiEsp Track webpabe](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/). 
-Gold standard files must be in the appropriate format (such as the files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/2019/09/19/datasets/)).
+sample, train, development, test, etc. Sample gold standard files and toy data are in this GitHub repository. For more gold standard files, please, visit the [CodiEsp Track webpabe](http://temu.bsc.es/codiesp/index.php/datasets/). 
+Gold standard files must be in the appropriate format (such as the files distributed in the [CodiEsp Track webpage](http://temu.bsc.es/codiesp/index.php/datasets/)).
 
 ##### system/
 This directory contains the submission files for each of the sub-tasks, in separated
@@ -78,11 +78,11 @@ Clinical case name			Precision
 -----------------------------------------------------
 S0000-000S0000000000000-00		nan
 -----------------------------------------------------
-S1889-836X2016000100006-1		0.625
+S1889-836X2016000100006-1		0.7
 -----------------------------------------------------
 codiespX_evaluation.py:248: UserWarning: Some documents do not have predicted codes, document-wise Precision not computed for them.
 
-Micro-average precision = 0.556
+Micro-average precision = 0.636
 
 
 -----------------------------------------------------
@@ -90,11 +90,11 @@ Clinical case name			Recall
 -----------------------------------------------------
 S0000-000S0000000000000-00		nan
 -----------------------------------------------------
-S1889-836X2016000100006-1		0.455
+S1889-836X2016000100006-1		0.636
 -----------------------------------------------------
 codiespX_evaluation.py:260: UserWarning: Some documents do not have Gold Standard codes, document-wise Recall not computed for them.
 
-Micro-average recall = 0.385
+Micro-average recall = 0.538
 
 
 -----------------------------------------------------
@@ -102,23 +102,23 @@ Clinical case name			F-score
 -----------------------------------------------------
 S0000-000S0000000000000-00		nan
 -----------------------------------------------------
-S1889-836X2016000100006-1		0.526
+S1889-836X2016000100006-1		0.667
 -----------------------------------------------------
 codiespX_evaluation.py:271: UserWarning: Some documents do not have predicted codes, document-wise F-score not computed for them.
 codiespX_evaluation.py:274: UserWarning: Some documents do not have Gold Standard codes, document-wise F-score not computed for them.
 
-Micro-average F-score = 0.455
+Micro-average F-score = 0.583
 
 
 __________________________________________________________
 
 MICRO-AVERAGE STATISTICS:
 
-Micro-average precision = 0.556
+Micro-average precision = 0.636
 
-Micro-average recall = 0.385
+Micro-average recall = 0.538
 
-Micro-average F-score = 0.455
+Micro-average F-score = 0.583
 ```
 
 ## Contact
