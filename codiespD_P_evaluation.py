@@ -17,7 +17,7 @@ def warning_on_one_line(message, category, filename, lineno, file=None, line=Non
 warnings.formatwarning = warning_on_one_line
 
 
-def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'reference']):
+def format_gs(filepath, output_path, gs_names = ['qid', 'docno']):
     '''
     DESCRIPTION: Load Gold Standard table.
     
@@ -38,24 +38,17 @@ def format_gs(filepath, output_path, gs_names = ['qid', "q0", 'docno', 'referenc
     '''
     # Check GS format:
     check = pd.read_csv(filepath, sep='\t', header = None, nrows=1)
-    if check.shape[1] != 4:
-        raise ImportError('The GS file does not have 4 columns. Then, it was not imported')
+    if check.shape[1] != 2:
+        raise ImportError('The GS file does not have 2 columns. Then, it was not imported')
     
     # Import GS
     gs = pd.read_csv(filepath, sep='\t', header = None, names = gs_names)  
-    
-    # Check the sub-task we are in
-    subtask = list(set(gs['q0'].tolist()))
-    if len(subtask)>1:
-        raise ValueError('There are codes for more than one subtask in the GS file')
-    if subtask[0] not in ['PROCEDIMIENTO', 'DIAGNOSTICO']:
-        raise ValueError('Unknown task label. Column 2 in GS file must be either PROCEDIMIENTO or DIAGNOSTICO')
         
     # Preprocessing
-    gs = gs.drop('reference', axis=1) # remove reference
     gs["q0"] = str(0) # column with all zeros (q0) # Columnn needed for the library to properly import the dataframe
     gs["rel"] = str(1) # column indicating the relevance of the code (in GS, all codes are relevant)
     gs.docno = gs.docno.str.lower() # Lowercase codes
+    gs = gs[['qid', 'q0', 'docno', 'rel']]
     
     # Remove codes predicted twice in the same clinical case 
     # (they are present in GS because one code may have several references)
