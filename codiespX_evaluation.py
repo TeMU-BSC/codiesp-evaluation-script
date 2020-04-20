@@ -210,6 +210,10 @@ def calculate_metrics(df_gs, df_pred, tol = 10):
     R_per_cc = TP_per_cc / GS_Pos_per_cc
     R = TP / GS_Pos
     F1_per_cc = (2 * P_per_cc * R_per_cc) / (P_per_cc + R_per_cc)
+    if (P+R) == 0:
+        F1 = 0
+        warnings.warn('Global F1 score automatically set to zero to avoid division by zero')
+        return P_per_cc, P, R_per_cc, R, F1_per_cc, F1
     F1 = (2 * P * R) / (P + R)
                                             
     return P_per_cc, P, R_per_cc, R, F1_per_cc, F1
