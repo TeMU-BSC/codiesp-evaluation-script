@@ -12,13 +12,16 @@ import warnings
 ###### 0. Load valid codes lists: ######
 
 def read_gs(gs_path):
-    gs_data = pd.read_csv(gs_path, sep="\t", names=['clinical_case', 'code'])
+    gs_data = pd.read_csv(gs_path, sep="\t", names=['clinical_case', 'code'],
+                          dtype={'clinical_case': object, 'code':object})
     gs_data.code = gs_data.code.str.lower()
     return gs_data
 
 def read_run(pred_path, valid_codes):
-    run_data = pd.read_csv(pred_path, sep="\t", names=['clinical_case', 'code'])
+    run_data = pd.read_csv(pred_path, sep="\t", names=['clinical_case', 'code'],
+                          dtype={'clinical_case': object, 'code':object})
     run_data.code = run_data.code.str.lower()
+
     run_data = run_data[run_data['code'].isin(valid_codes)]
     if (run_data.shape[0] == 0):
         warnings.warn('None of the predicted codes are considered valid codes')
