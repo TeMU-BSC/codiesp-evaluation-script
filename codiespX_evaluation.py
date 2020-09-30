@@ -32,6 +32,7 @@ def read_gs(filepath, gs_headers=["clinical_case","label_gs", "code", "ref", "po
         raise ImportError('The GS file does not have 4 columns. Then, it was not imported')
     
     gs_data = pd.read_csv(filepath, sep="\t", names=gs_headers)
+    gs_data.code = gs_data.code.str.lower()
     
     gs_data['start_pos_gs'], gs_data['aux_end_gs'] = gs_data['pos_gs'].str.split(' ', 1).str
     
@@ -66,6 +67,7 @@ def read_run(filepath, valid_codes,
         raise ImportError('The predictions file does not have 4 columns. Then, it was not imported')
         
     run_data = pd.read_csv(filepath, sep="\t", names=run_headers)
+    run_data.code = run_data.code.str.lower()
     
     # Check predictions types
     if all(run_data.dtypes == pd.Series({'clinical_case': object,
