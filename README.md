@@ -5,10 +5,11 @@ These scripts are distributed as part of the Clinical Cases Coding in Spanish la
 
 ```
 $> python codiespD_P_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -c /path/to/codes.tsv
+$> python comp_f1_diag_proc.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -c /path/to/codes.tsv
 $> python codiespX_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -cD /path/to/codes-D.tsv -cP path/to/codes-P.tsv
 ```
 
-They compute the evaluation metrics for the corresponding tasks (Mean Average Precision for CodiEsp-D and CodiEsp-P and F-score for CodiEsp-X).
+They compute the evaluation metrics for the corresponding tasks (Mean Average Precision for CodiEsp-D and CodiEsp-P and F-score for CodiEsp-X). In addition, comp_f1_diag_proc.py computes Precision, Recall and F1 for CodiEsp-D and CodiEsp-P.
 
 Mean Average Precision (MAP) is computed using the Python implementation of TREC evaluation tool, [trectools](https://github.com/joaopalotti/trectools), by Palotti et al. (2019) [1].
 
@@ -41,11 +42,11 @@ sample, train, development, test, etc. A toy data directory is provided. Files i
 This directory contains the TSV files with the lists of valid codes for the subtasks (with their descriptions in Spanish and English).
 
 ## Usage
-Both scripts require the same two parameters:
+All scripts require the same two parameters:
 + The --gs_path (-g) option specifies the path to the Gold Standard file.
 + The --pred_path (-p) option specifies the path to the predictions file.
 
-In addition, codiespD_P_evaluate.py requires an extra parameter:
+In addition, codiespD_P_evaluate.py and comp_f1_diag_proc.py requires an extra parameter:
 + The --valid_codes_path (-c) option specifies the path to the list of valid codes for the CodiEsp subtask we are evaluating.
 
 Finally, codiespX_evaluate.py requires two extra parameters:
@@ -54,6 +55,7 @@ Finally, codiespX_evaluate.py requires two extra parameters:
 
 ```
 $> python codiespD_P_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -c /path/to/codes.tsv
+$> python comp_f1_diag_proc.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -c /path/to/codes.tsv
 $> python codiespX_evaluate.py -g /path/to/gold_standard.tsv -p /path/to/predictions.tsv -cD /path/to/codes-D.tsv -cP path/to/codes-P.tsv
 ```
 
@@ -119,6 +121,72 @@ Micro-average precision = 0.636
 Micro-average recall = 0.538
 
 Micro-average F-score = 0.583
+```
+
+#### Example 3:
+Evaluate the system output pred_D.tsv against the gold standard gs_D.tsv (both inside toy_data subfolders). In this case, compute Precision, Recall and F1 score.
+
+```
+$>  python3 comp_f1_diag_proc.py -g gold/toy_data/gs_D.tsv -p system/toy_data/pred_D.tsv -c codiesp_codes/codiesp-D_codes.tsv
+
+-----------------------------------------------------
+Clinical case name			Precision
+-----------------------------------------------------
+S0004-06142006000900013-1		0.4
+-----------------------------------------------------
+S0210-48062005000700013-1		nan
+-----------------------------------------------------
+S1130-05582003000600004-2		0.5
+-----------------------------------------------------
+comp_f1_diag_proc.py:110: UserWarning: Some documents do not have predicted codes, document-wise Precision not computed for them.
+  warnings.warn('Some documents do not have predicted codes, ' +
+
+Micro-average precision = 0.444
+
+
+-----------------------------------------------------
+Clinical case name			Recall
+-----------------------------------------------------
+S0004-06142006000900013-1		0.667
+-----------------------------------------------------
+S0210-48062005000700013-1		0.0
+-----------------------------------------------------
+S1130-05582003000600004-2		0.4
+-----------------------------------------------------
+
+Micro-average recall = 0.4
+
+
+-----------------------------------------------------
+Clinical case name			F-score
+-----------------------------------------------------
+S0004-06142006000900013-1		0.5
+-----------------------------------------------------
+S0210-48062005000700013-1		nan
+-----------------------------------------------------
+S1130-05582003000600004-2		0.444
+-----------------------------------------------------
+comp_f1_diag_proc.py:133: UserWarning: Some documents do not have predicted codes, document-wise F-score not computed for them.
+  warnings.warn('Some documents do not have predicted codes, ' +
+
+Micro-average F-score = 0.421
+
+
+__________________________________________________________
+
+MICRO-AVERAGE STATISTICS:
+
+Micro-average precision = 0.444
+
+Micro-average recall = 0.4
+
+Micro-average F-score = 0.421
+
+
+0.444|0.4|0.421
+
+
+
 ```
 
 ## Contact
