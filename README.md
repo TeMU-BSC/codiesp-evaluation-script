@@ -197,6 +197,14 @@ Antonio Miranda-Escalada (antonio.miranda@bsc.es)
 [1] Palotti, Joao and Scells, Harrisen and Zuccon, Guido: TrecTools: an open-source Python library for Information Retrieval practitioners involved in TREC-like campaigns, SIGIR'19, 2019, ACM.
 
 
-## License
+## Please, cite us:
+
+Miranda-Escalada, A., Gonzalez-Agirre, A., Armengol-Estapé, J., Krallinger, M.: Overview of automatic clinical coding: annotations, guidelines, and solutions for non-English clinical cases at CodiEsp track of eHealth CLEF 2020. In: CLEF (Working Notes) (2020)
+
+@inproceedings{miranda2020overview, 
+title={Overview of automatic clinical coding: annotations, guidelines, and solutions for non-english clinical cases at codiesp track of CLEF eHealth 2020}, 
+author={Miranda-Escalada, Antonio and Gonzalez-Agirre, Aitor and Armengol-Estap{\'e}, Jordi and Krallinger, Martin}, 
+booktitle={Working Notes of Conference and Labs of the Evaluation (CLEF) Forum. CEUR Workshop Proceedings}, 
+year={2020} }
 
 
